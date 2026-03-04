@@ -36,6 +36,26 @@
 		component: './RandomUser',
 		icon: 'ArrowsAltOutlined',
 	},
+	{
+		path: '/tro-choi-doan-so',
+		name: 'Bài 1 - Đoán Số',
+		component: './TienIch/DoanSo',
+	},
+	{
+		path: '/todo-list',
+		name: 'Bài 2 - TodoList',
+		component: './TienIch/TodoList',
+	},
+	{
+		path: '/oan-tu-ti',
+		name: 'Bài 3 - Oẳn Tù Tì',
+		component: './TienIch/OanTuTi',
+	},
+	{
+		path: '/quan-ly-ngan-hang',
+		name: 'Bài 4 - Ngân Hàng Câu Hỏi',
+		component: './TienIch/QuanLyNganHang',
+	},
 
 	// DANH MUC HE THONG
 	// {
