@@ -56,20 +56,26 @@
 		name: 'Bài 4 - Ngân Hàng Câu Hỏi',
 		component: './TienIch/QuanLyNganHang',
 	},
+{
+  path: '/quan-ly-nhan-vien',
+  name: 'Quản lý nhân viên',
+  component: './TienIch/Quanlynhanvien',
+},
+{
+  path: '/quan-ly-lich-hen',
+  name: 'Quản lý lịch hẹn',
+  component: './TienIch/quanlylichhen',
+},
+{
+  path: '/danh-gia-dich-vu',
+  name: 'Đánh giá & Thống kê',
+  routes: [
+    { path: '/danh-gia-dich-vu/feedback', name: 'Đánh giá', component: './TienIch/danhgiadichvu' },
+    { path: '/danh-gia-dich-vu/thong-ke', name: 'Thống kê', component: './TienIch/thongke' },
+  ],
+},
 
-	// DANH MUC HE THONG
-	// {
-	// 	name: 'DanhMuc',
-	// 	path: '/danh-muc',
-	// 	icon: 'copy',
-	// 	routes: [
-	// 		{
-	// 			name: 'ChucVu',
-	// 			path: 'chuc-vu',
-	// 			component: './DanhMuc/ChucVu',
-	// 		},
-	// 	],
-	// },
+	
 
 	{
 		path: '/notification',
