@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Card, Col, Descriptions, Empty, Form, Input, InputNumber, message, Row, Space, Statistic, Typography } from 'antd';
 import { useModel } from 'umi';
-import type { DiplomaField, DiplomaSearch, GraduationDecision } from '@/services/Bai5/typing';
+import type { DiplomaField, DiplomaSearch } from '@/services/Bai5/typing';
 import { searchDiploma } from '@/services/Bai5/search';
 import MyDatePicker from '@/components/MyDatePicker';
 import { DynamicFieldDescriptions } from '@/pages/TienIch/Bai5/components/DynamicFields';

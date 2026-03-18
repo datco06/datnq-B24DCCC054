@@ -237,7 +237,7 @@ const ThongTinVanBang: React.FC = () => {
 			</Col>
 			<Modal
 				title={edit ? 'Cập nhật thông tin văn bằng' : 'Thêm thông tin văn bằng'}
-				open={visibleForm}
+				visible={visibleForm}
 				onCancel={closeModal}
 				onOk={submit}
 				confirmLoading={formSubmiting}
@@ -316,12 +316,6 @@ const ThongTinVanBang: React.FC = () => {
 							</Form.Item>
 						</Col>
 					</Row>
-					<Alert
-						type='info'
-						showIcon
-						message={edit ? `Số vào sổ: ${record?.entryNumber}` : 'Số vào sổ sẽ được cấp tự động khi lưu'}
-						style={{ marginBottom: 16 }}
-					/>
 					<Typography.Title level={5}>Thông tin bổ sung</Typography.Title>
 					{fields.length ? (
 						<DynamicFieldInputs fields={fields as DiplomaField.IRecord[]} />
@@ -332,7 +326,7 @@ const ThongTinVanBang: React.FC = () => {
 			</Modal>
 			<Drawer
 				title='Chi tiết văn bằng'
-				open={Boolean(viewRecord)}
+				visible={Boolean(viewRecord)}
 				onClose={() => setViewRecord(null)}
 				width={520}
 			>

@@ -189,7 +189,7 @@ const SoVanBang: React.FC = () => {
 			</Col>
 			<Modal
 				title={edit ? 'Cập nhật sổ văn bằng' : 'Thêm sổ văn bằng'}
-				open={visibleForm}
+				visible={visibleForm}
 				onCancel={closeModal}
 				onOk={submit}
 				confirmLoading={formSubmiting}

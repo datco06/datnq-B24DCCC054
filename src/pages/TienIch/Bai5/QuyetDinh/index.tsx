@@ -184,7 +184,7 @@ const QuyetDinhPage: React.FC = () => {
 			</Col>
 			<Modal
 				title={edit ? 'Cập nhật quyết định' : 'Thêm quyết định tốt nghiệp'}
-				open={visibleForm}
+				visible={visibleForm}
 				onCancel={closeModal}
 				onOk={submit}
 				confirmLoading={formSubmiting}

@@ -26,7 +26,7 @@ const CauHinhTruong: React.FC = () => {
 		formSubmiting,
 		loading,
 	} = useModel('bai5.field');
-	const [form] = Form.useForm<DiplomaField.TPayload>();
+	const [form] = Form.useForm<Omit<DiplomaField.TPayload, 'code'>>();
 
 	useEffect(() => {
 		getModel();
@@ -37,7 +37,6 @@ const CauHinhTruong: React.FC = () => {
 			setEdit(true);
 			setRecord(item);
 			form.setFieldsValue({
-				code: item.code,
 				label: item.label,
 				dataType: item.dataType,
 				required: item.required,
@@ -64,7 +63,8 @@ const CauHinhTruong: React.FC = () => {
 		form
 			.validateFields()
 			.then((values) => {
-				const payload = { ...values, code: values.code.toUpperCase().replace(/\s+/g, '_') };
+				const code = edit && record ? record.code : values.label.trim().toUpperCase().replace(/\s+/g, '_');
+				const payload = { ...values, code };
 				if (edit && record?._id) return putModel(record._id, payload, getModel);
 				return postModel(payload, getModel);
 			})
@@ -73,11 +73,6 @@ const CauHinhTruong: React.FC = () => {
 	};
 
 	const columns: ColumnsType<DiplomaField.IRecord> = [
-		{
-			title: 'Mã trường',
-			dataIndex: 'code',
-			width: 160,
-		},
 		{
 			title: 'Tên hiển thị',
 			dataIndex: 'label',
@@ -149,21 +144,13 @@ const CauHinhTruong: React.FC = () => {
 			</Col>
 			<Modal
 				title={edit ? 'Chỉnh sửa trường' : 'Thêm trường thông tin'}
-				open={visibleForm}
+				visible={visibleForm}
 				onCancel={closeModal}
 				onOk={submit}
 				confirmLoading={formSubmiting}
 				width={600}
 			>
 				<Form layout='vertical' form={form}>
-					<Form.Item
-						label='Mã trường'
-						name='code'
-						extra='Viết hoa, không dấu, hệ thống sẽ tự chuyển thành UPPER_CASE'
-						rules={[{ required: true, message: 'Vui lòng nhập mã trường' }]}
-					>
-						<Input placeholder='VD: GPA' />
-					</Form.Item>
 					<Form.Item
 						label='Tên hiển thị'
 						name='label'
