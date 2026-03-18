@@ -74,6 +74,41 @@
     { path: '/danh-gia-dich-vu/thong-ke', name: 'Thống kê', component: './TienIch/thongke' },
   ],
 },
+	{
+		path: '/quan-ly-van-bang',
+		name: 'Bài 5 - Quản lý văn bằng',
+		routes: [
+			{
+				path: '/quan-ly-van-bang',
+				redirect: '/quan-ly-van-bang/so-van-bang',
+			},
+			{
+				path: '/quan-ly-van-bang/so-van-bang',
+				name: 'Sổ văn bằng',
+				component: './TienIch/Bai5/SoVanBang',
+			},
+			{
+				path: '/quan-ly-van-bang/quyet-dinh',
+				name: 'Quyết định tốt nghiệp',
+				component: './TienIch/Bai5/QuyetDinh',
+			},
+			{
+				path: '/quan-ly-van-bang/cau-hinh-truong',
+				name: 'Cấu hình biểu mẫu',
+				component: './TienIch/Bai5/CauHinhTruong',
+			},
+			{
+				path: '/quan-ly-van-bang/thong-tin-van-bang',
+				name: 'Thông tin văn bằng',
+				component: './TienIch/Bai5/ThongTinVanBang',
+			},
+			{
+				path: '/quan-ly-van-bang/tra-cuu',
+				name: 'Tra cứu văn bằng',
+				component: './TienIch/Bai5/TraCuu',
+			},
+		],
+	},
 
 	
 

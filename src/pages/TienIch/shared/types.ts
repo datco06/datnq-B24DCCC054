@@ -7,9 +7,9 @@ export type Service = {
 };
 
 export type StaffScheduleSlot = {
-	dayOfWeek: number; // 0-6: Sunday-Saturday
-	start: string; // HH:mm
-	end: string; // HH:mm
+	dayOfWeek: number; 
+	start: string; 
+	end: string; 
 	capacityPerDay: number;
 };
 
@@ -18,7 +18,7 @@ export type Staff = {
 	name: string;
 	phone?: string;
 	email?: string;
-	services: string[]; // service ids
+	services: string[]; 
 	schedule: StaffScheduleSlot[];
 	ratingAverage?: number;
 	reviewCount?: number;
@@ -32,7 +32,7 @@ export type Appointment = {
 	customerPhone?: string;
 	serviceId: string;
 	staffId: string;
-	start: string; // ISO string
+	start: string; 
 	end: string;
 	status: AppointmentStatus;
 	notes?: string;
