@@ -1,0 +1,148 @@
+import type { CauLacBo, DonDangKy, DuLieuQuanLyCauLacBo } from './typing';
+
+const taoAnhMacDinh = (chu: string, mauNen: string, mauChu: string) =>
+	`data:image/svg+xml;utf8,${encodeURIComponent(
+		`<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" rx="28" fill="${mauNen}"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="40" font-weight="700" fill="${mauChu}">${chu}</text></svg>`,
+	)}`;
+
+const danhSachCauLacBoMau: CauLacBo[] = [
+	{
+		id: 'clb-001',
+		anhDaiDien: taoAnhMacDinh('AI', '#DFF3EA', '#116149'),
+		tenCauLacBo: 'Câu lạc bộ AI & Dữ liệu',
+		ngayThanhLap: '2021-03-15',
+		moTa: '<p>CLB tập trung vào học máy, xử lý dữ liệu và các dự án nghiên cứu ứng dụng.</p>',
+		chuNhiem: 'Nguyễn Minh Khoa',
+		dangHoatDong: true,
+		ngayTao: '2026-03-20T08:00:00.000Z',
+		ngayCapNhat: '2026-03-20T08:00:00.000Z',
+	},
+	{
+		id: 'clb-002',
+		anhDaiDien: taoAnhMacDinh('WB', '#FFF0CC', '#8A4B00'),
+		tenCauLacBo: 'Câu lạc bộ Web Builder',
+		ngayThanhLap: '2020-09-10',
+		moTa: '<p>CLB dành cho sinh viên yêu thích thiết kế giao diện, lập trình front-end và fullstack.</p>',
+		chuNhiem: 'Trần Ngọc Anh',
+		dangHoatDong: true,
+		ngayTao: '2026-03-20T08:00:00.000Z',
+		ngayCapNhat: '2026-03-20T08:00:00.000Z',
+	},
+	{
+		id: 'clb-003',
+		anhDaiDien: taoAnhMacDinh('MC', '#E6ECFF', '#1C3E8A'),
+		tenCauLacBo: 'Câu lạc bộ MC & Sự kiện',
+		ngayThanhLap: '2019-11-22',
+		moTa: '<p>CLB phụ trách dẫn chương trình, tổ chức sự kiện, truyền thông và hoạt náo.</p>',
+		chuNhiem: 'Lê Thu Hà',
+		dangHoatDong: false,
+		ngayTao: '2026-03-20T08:00:00.000Z',
+		ngayCapNhat: '2026-03-20T08:00:00.000Z',
+	},
+];
+
+const danhSachDonDangKyMau: DonDangKy[] = [
+	{
+		id: 'don-001',
+		hoTen: 'Phạm Quang Huy',
+		email: 'huy.pq@example.com',
+		soDienThoai: '0912345678',
+		gioiTinh: 'nam',
+		diaChi: 'Hà Nội',
+		soTruong: 'Python, phân tích dữ liệu',
+		cauLacBoId: 'clb-001',
+		lyDoDangKy: 'Muốn tham gia các dự án AI thực tế và học thêm về dữ liệu.',
+		trangThai: 'approved',
+		ngayTao: '2026-03-21T02:30:00.000Z',
+		ngayCapNhat: '2026-03-22T10:00:00.000Z',
+		lichSuXuLy: [
+			{
+				id: 'lsxl-001',
+				thoiGian: '2026-03-22T10:00:00.000Z',
+				nguoiXuLy: 'Admin',
+				hanhDong: 'Duyệt đơn',
+			},
+		],
+	},
+	{
+		id: 'don-002',
+		hoTen: 'Đỗ Hải Yến',
+		email: 'yen.dh@example.com',
+		soDienThoai: '0987654321',
+		gioiTinh: 'nu',
+		diaChi: 'Bắc Ninh',
+		soTruong: 'React, Figma',
+		cauLacBoId: 'clb-002',
+		lyDoDangKy: 'Muốn nâng cao kỹ năng front-end và tham gia các workshop.',
+		trangThai: 'pending',
+		ngayTao: '2026-03-23T01:00:00.000Z',
+		ngayCapNhat: '2026-03-23T01:00:00.000Z',
+		lichSuXuLy: [],
+	},
+	{
+		id: 'don-003',
+		hoTen: 'Nguyễn Việt Cường',
+		email: 'cuong.nv@example.com',
+		soDienThoai: '0909988776',
+		gioiTinh: 'nam',
+		diaChi: 'Thái Bình',
+		soTruong: 'Thuyết trình, hoạt náo',
+		cauLacBoId: 'clb-003',
+		lyDoDangKy: 'Muốn tham gia các hoạt động sự kiện và làm MC.',
+		trangThai: 'rejected',
+		ghiChu: 'CLB hiện chưa mở tuyển đợt này.',
+		ngayTao: '2026-03-22T03:20:00.000Z',
+		ngayCapNhat: '2026-03-24T10:30:00.000Z',
+		lichSuXuLy: [
+			{
+				id: 'lsxl-002',
+				thoiGian: '2026-03-24T10:30:00.000Z',
+				nguoiXuLy: 'Admin',
+				hanhDong: 'Từ chối đơn',
+				ghiChu: 'CLB hiện chưa mở tuyển đợt này.',
+			},
+		],
+	},
+	{
+		id: 'don-004',
+		hoTen: 'Trịnh Gia Bảo',
+		email: 'bao.tg@example.com',
+		soDienThoai: '0934567890',
+		gioiTinh: 'nam',
+		diaChi: 'Hải Phòng',
+		soTruong: 'NodeJS, Express',
+		cauLacBoId: 'clb-002',
+		lyDoDangKy: 'Muốn tham gia đội phát triển website cho CLB.',
+		trangThai: 'approved',
+		ngayTao: '2026-03-22T07:45:00.000Z',
+		ngayCapNhat: '2026-03-24T08:15:00.000Z',
+		lichSuXuLy: [
+			{
+				id: 'lsxl-003',
+				thoiGian: '2026-03-24T08:15:00.000Z',
+				nguoiXuLy: 'Admin',
+				hanhDong: 'Duyệt đơn',
+			},
+		],
+	},
+	{
+		id: 'don-005',
+		hoTen: 'Hoàng Mai Linh',
+		email: 'linh.hm@example.com',
+		soDienThoai: '0977123123',
+		gioiTinh: 'nu',
+		diaChi: 'Nam Định',
+		soTruong: 'SQL, Power BI',
+		cauLacBoId: 'clb-001',
+		lyDoDangKy: 'Muốn học thêm về trực quan hóa dữ liệu và làm báo cáo.',
+		trangThai: 'pending',
+		ngayTao: '2026-03-24T02:15:00.000Z',
+		ngayCapNhat: '2026-03-24T02:15:00.000Z',
+		lichSuXuLy: [],
+	},
+];
+
+export const duLieuQuanLyCauLacBoMau: DuLieuQuanLyCauLacBo = {
+	danhSachCauLacBo: danhSachCauLacBoMau,
+	danhSachDonDangKy: danhSachDonDangKyMau,
+};

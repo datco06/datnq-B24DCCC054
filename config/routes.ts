@@ -109,6 +109,12 @@
 			},
 		],
 	},
+	{
+		path: '/quan-ly-cau-lac-bo',
+		name: 'QuanLyCauLacBo',
+		component: './TienIch/QuanLyCauLacBo',
+		icon: 'TeamOutlined',
+	},
 
 	
 
