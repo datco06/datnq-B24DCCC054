@@ -75,24 +75,46 @@
 			},
 		],
 	},
-{
-  path: '/quan-ly-nhan-vien',
-  name: 'Quản lý nhân viên',
-  component: './TienIch/Quanlynhanvien',
-},
-{
-  path: '/quan-ly-lich-hen',
-  name: 'Quản lý lịch hẹn',
-  component: './TienIch/quanlylichhen',
-},
-{
-  path: '/danh-gia-dich-vu',
-  name: 'Đánh giá & Thống kê',
-  routes: [
-    { path: '/danh-gia-dich-vu/feedback', name: 'Đánh giá', component: './TienIch/danhgiadichvu' },
-    { path: '/danh-gia-dich-vu/thong-ke', name: 'Thống kê', component: './TienIch/thongke' },
-  ],
-},
+	{
+		path: '/bai-3',
+		name: 'Bài 3',
+		routes: [
+			{
+				path: '/bai-3',
+				redirect: '/bai-3/quan-ly-nhan-vien',
+			},
+			{
+				path: '/bai-3/quan-ly-nhan-vien',
+				name: 'Quản lý nhân viên',
+				component: './TienIch/Bai3/QuanLyNhanVien',
+			},
+			{
+				path: '/bai-3/quan-ly-lich-hen',
+				name: 'Quản lý lịch hẹn',
+				component: './TienIch/Bai3/QuanLyLichHen',
+			},
+			{
+				path: '/bai-3/danh-gia-dich-vu',
+				name: 'Đánh giá & Thống kê',
+				routes: [
+					{
+						path: '/bai-3/danh-gia-dich-vu',
+						redirect: '/bai-3/danh-gia-dich-vu/feedback',
+					},
+					{
+						path: '/bai-3/danh-gia-dich-vu/feedback',
+						name: 'Đánh giá',
+						component: './TienIch/Bai3/DanhGiaDichVu',
+					},
+					{
+						path: '/bai-3/danh-gia-dich-vu/thong-ke',
+						name: 'Thống kê',
+						component: './TienIch/Bai3/ThongKe',
+					},
+				],
+			},
+		],
+	},
 	{
 		path: '/quan-ly-van-bang',
 		name: 'Bài 5 - Quản lý văn bằng',
