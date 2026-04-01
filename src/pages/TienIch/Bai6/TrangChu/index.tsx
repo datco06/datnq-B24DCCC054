@@ -8,10 +8,12 @@ import {
 	StarFilled,
 } from '@ant-design/icons';
 import { Button, Card, Col, Input, Modal, Rate, Row, Select, Slider, Tag, Tooltip, Typography } from 'antd';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { DiemDen, LoaiDiemDen } from './data';
 import { danhSachDiemDen, mauLoai, tenLoai } from './data';
 import styles from './index.less';
+import { loadDestinations } from '../TrangQuanTri/admin/storage';
+import type { Destination } from '../TrangQuanTri/admin/typing';
 
 const { Title, Paragraph } = Typography;
 const { Option } = Select;
@@ -26,7 +28,45 @@ const GIA_TOI_DA = 5000000;
 
 type SortMode = 'rating-desc' | 'rating-asc' | 'price-asc' | 'price-desc' | 'reviews-desc' | 'name-asc';
 
+const PLACEHOLDER_IMAGE =
+	'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=60';
+
+const mapDestinations = (items: Destination[]): DiemDen[] => {
+	return items.map((item) => {
+		const loai: LoaiDiemDen = item.type === 'thanh-pho' ? 'thanhpho' : (item.type as LoaiDiemDen);
+		return {
+			id: item.id,
+			ten: item.name,
+			moTa: item.description,
+			hinhAnh: item.image ?? PLACEHOLDER_IMAGE,
+			diaDiem: item.location,
+			loai,
+			danhGia: item.rating,
+			soLuotDanhGia: Math.max(100, Math.round(item.rating * 1800)),
+			giaTien: item.costs.food + item.costs.transport + item.costs.stay,
+			noiDung: ['Ẩm thực', 'Lưu trú', 'Trải nghiệm'],
+			tags: [item.priceCategory],
+		};
+	});
+};
+
 const Bai6TrangChu: React.FC = () => {
+	const [duLieuAdmin, setDuLieuAdmin] = useState<DiemDen[]>(() => mapDestinations(loadDestinations()));
+
+	useEffect(() => {
+		const syncData = () => {
+			const data = mapDestinations(loadDestinations());
+			setDuLieuAdmin(data);
+		};
+		if (typeof window !== 'undefined') {
+			window.addEventListener('storage', syncData);
+			return () => window.removeEventListener('storage', syncData);
+		}
+		return () => undefined;
+	}, []);
+
+	const danhSachNguon = duLieuAdmin.length > 0 ? duLieuAdmin : danhSachDiemDen;
+
 	// States
 	const [tuKhoa, setTuKhoa] = useState('');
 	const [loaiLoc, setLoaiLoc] = useState<LoaiDiemDen | 'tat-ca'>('tat-ca');
@@ -37,7 +77,7 @@ const Bai6TrangChu: React.FC = () => {
 
 	// Filter + Sort Logic
 	const danhSachDaLoc = useMemo(() => {
-		let ketQua = [...danhSachDiemDen];
+		let ketQua = [...danhSachNguon];
 
 		// Lọc theo từ khóa
 		if (tuKhoa.trim()) {
@@ -102,11 +142,12 @@ const Bai6TrangChu: React.FC = () => {
 
 	// Thống kê nhanh
 	const thongKe = useMemo(() => {
-		const soBien = danhSachDiemDen.filter((dd) => dd.loai === 'bien').length;
-		const soNui = danhSachDiemDen.filter((dd) => dd.loai === 'nui').length;
-		const soThanhPho = danhSachDiemDen.filter((dd) => dd.loai === 'thanhpho').length;
-		return { soBien, soNui, soThanhPho, tongSo: danhSachDiemDen.length };
-	}, []);
+		const soBien = danhSachNguon.filter((dd) => dd.loai === 'bien').length;
+		const soNui = danhSachNguon.filter((dd) => dd.loai === 'nui').length;
+		const soThanhPho = danhSachNguon.filter((dd) => dd.loai === 'thanhpho').length;
+		const soLangQue = danhSachNguon.filter((dd) => dd.loai === 'lang-que').length;
+		return { soBien, soNui, soThanhPho, soLangQue, tongSo: danhSachNguon.length };
+	}, [danhSachNguon]);
 
 	return (
 		<div>
@@ -140,6 +181,12 @@ const Bai6TrangChu: React.FC = () => {
 						<div className={styles.statNumber}>{thongKe.soThanhPho}</div>
 						<div className={styles.statLabel}>Thành phố</div>
 					</div>
+					{thongKe.soLangQue > 0 && (
+						<div className={styles.statItem}>
+							<div className={styles.statNumber}>{thongKe.soLangQue}</div>
+							<div className={styles.statLabel}>Làng quê</div>
+						</div>
+					)}
 				</div>
 			</div>
 

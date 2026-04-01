@@ -5,7 +5,7 @@ import hoianTown from './images/hoian_town.png';
 import phuquocIsland from './images/phuquoc_island.png';
 import dalatCity from './images/dalat_city.png';
 
-export type LoaiDiemDen = 'bien' | 'nui' | 'thanhpho';
+export type LoaiDiemDen = 'bien' | 'nui' | 'thanhpho' | 'lang-que';
 
 export interface DiemDen {
 	id: string;
@@ -25,12 +25,14 @@ export const tenLoai: Record<LoaiDiemDen, string> = {
 	bien: '🏖️ Biển',
 	nui: '⛰️ Núi',
 	thanhpho: '🏙️ Thành phố',
+	'lang-que': '🏡 Làng quê',
 };
 
 export const mauLoai: Record<LoaiDiemDen, string> = {
 	bien: '#1890ff',
 	nui: '#52c41a',
 	thanhpho: '#faad14',
+	'lang-que': '#f759ab',
 };
 
 export const danhSachDiemDen: DiemDen[] = [
