@@ -47,7 +47,7 @@ const OanTuTi: React.FC = () => {
 				<Card>
 					<Space direction='vertical' size='large' style={{ width: '100%' }}>
 						<div>
-							<Title level={3}>Bài 3: Trò chơi Oẳn Tù Tì</Title>
+							<Title level={3}>Bài 2: Trò chơi Oẳn Tù Tì</Title>
 						</div>
 						<Space>
 							{luaChonHopLe.map((luaChon) => (

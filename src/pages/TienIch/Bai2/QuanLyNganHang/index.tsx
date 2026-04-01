@@ -262,7 +262,7 @@ const QuanLyNganHang: React.FC = () => {
 
 	return (
 		<Space direction='vertical' size='large' style={{ width: '100%' }}>
-			<Title level={2}>Bài 4: Quản lý ngân hàng câu hỏi tự luận</Title>
+			<Title level={2}>Bài 2: Quản lý ngân hàng câu hỏi tự luận</Title>
 			<Row gutter={[24, 24]}>
 				<Col xs={24} lg={12}>
 					<Card title='1. Danh mục khối kiến thức'>

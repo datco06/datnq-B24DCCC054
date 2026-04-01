@@ -56,14 +56,24 @@
 		],
 	},
 	{
-		path: '/oan-tu-ti',
-		name: 'Bài 3 - Oẳn Tù Tì',
-		component: './TienIch/OanTuTi',
-	},
-	{
-		path: '/quan-ly-ngan-hang',
-		name: 'Bài 4 - Ngân Hàng Câu Hỏi',
-		component: './TienIch/QuanLyNganHang',
+		path: '/bai-2',
+		name: 'Bài 2',
+		routes: [
+			{
+				path: '/bai-2',
+				redirect: '/bai-2/oan-tu-ti',
+			},
+			{
+				path: '/bai-2/oan-tu-ti',
+				name: 'Oẳn Tù Tì',
+				component: './TienIch/Bai2/OanTuTi',
+			},
+			{
+				path: '/bai-2/ngan-hang-cau-hoi',
+				name: 'Ngân hàng câu hỏi',
+				component: './TienIch/Bai2/QuanLyNganHang',
+			},
+		],
 	},
 {
   path: '/quan-ly-nhan-vien',
