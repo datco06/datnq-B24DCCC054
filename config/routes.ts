@@ -115,46 +115,45 @@
 			},
 		],
 	},
+		{
+			path: '/bai-4',
+			name: 'Bài 4 - Quản lý văn bằng',
+			routes: [
+				{
+					path: '/bai-4',
+					redirect: '/bai-4/so-van-bang',
+				},
+				{
+					path: '/bai-4/so-van-bang',
+					name: 'Sổ văn bằng',
+					component: './TienIch/Bai4/SoVanBang',
+				},
+				{
+					path: '/bai-4/quyet-dinh',
+					name: 'Quyết định tốt nghiệp',
+					component: './TienIch/Bai4/QuyetDinh',
+				},
+				{
+					path: '/bai-4/cau-hinh-truong',
+					name: 'Cấu hình biểu mẫu',
+					component: './TienIch/Bai4/CauHinhTruong',
+				},
+				{
+					path: '/bai-4/thong-tin-van-bang',
+					name: 'Thông tin văn bằng',
+					component: './TienIch/Bai4/ThongTinVanBang',
+				},
+				{
+					path: '/bai-4/tra-cuu',
+					name: 'Tra cứu văn bằng',
+					component: './TienIch/Bai4/TraCuu',
+				},
+			],
+		},
 	{
-		path: '/quan-ly-van-bang',
-		name: 'Bài 5 - Quản lý văn bằng',
-		routes: [
-			{
-				path: '/quan-ly-van-bang',
-				redirect: '/quan-ly-van-bang/so-van-bang',
-			},
-			{
-				path: '/quan-ly-van-bang/so-van-bang',
-				name: 'Sổ văn bằng',
-				component: './TienIch/Bai5/SoVanBang',
-			},
-			{
-				path: '/quan-ly-van-bang/quyet-dinh',
-				name: 'Quyết định tốt nghiệp',
-				component: './TienIch/Bai5/QuyetDinh',
-			},
-			{
-				path: '/quan-ly-van-bang/cau-hinh-truong',
-				name: 'Cấu hình biểu mẫu',
-				component: './TienIch/Bai5/CauHinhTruong',
-			},
-			{
-				path: '/quan-ly-van-bang/thong-tin-van-bang',
-				name: 'Thông tin văn bằng',
-				component: './TienIch/Bai5/ThongTinVanBang',
-			},
-			{
-				path: '/quan-ly-van-bang/tra-cuu',
-				name: 'Tra cứu văn bằng',
-				component: './TienIch/Bai5/TraCuu',
-			},
-		],
-	},
-	{
-		path: '/quan-ly-cau-lac-bo',
-		name: 'QuanLyCauLacBo',
-		component: './TienIch/QuanLyCauLacBo',
-		icon: 'TeamOutlined',
+		path: '/bai-5/quan-ly-cau-lac-bo',
+		name: 'Bài 5 - Quản lý câu lạc bộ',
+		component: './TienIch/Bai5/QuanLyCauLacBo',
 	},
 
 	

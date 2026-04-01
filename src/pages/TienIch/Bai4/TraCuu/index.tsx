@@ -4,7 +4,7 @@ import { useModel } from 'umi';
 import type { DiplomaField, DiplomaSearch } from '@/services/Bai5/typing';
 import { searchDiploma } from '@/services/Bai5/search';
 import MyDatePicker from '@/components/MyDatePicker';
-import { DynamicFieldDescriptions } from '@/pages/TienIch/Bai5/components/DynamicFields';
+import { DynamicFieldDescriptions } from '@/pages/TienIch/Bai4/components/DynamicFields';
 import ColumnChart from '@/components/Chart/ColumnChart';
 import dayjs from 'dayjs';
 

@@ -4,7 +4,7 @@ export default {
 	'menu.account.center': 'Cá nhân',
 	'menu.Dashboard': 'Trang chủ',
 	'menu.News': 'Tin tức',
-	'menu.QuanLyCauLacBo': 'Bài 6 - Quản lý câu lạc bộ',
+	'menu.QuanLyCauLacBo': 'Bài 5 - Quản lý câu lạc bộ',
 
 	'menu.DanhMuc': 'Danh mục',
 	'menu.DanhMuc.ChucVu': 'Chức vụ',

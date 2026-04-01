@@ -22,7 +22,7 @@ import dayjs from 'dayjs';
 import { useModel } from 'umi';
 import type { DiplomaBook, DiplomaField, DiplomaInfo, GraduationDecision } from '@/services/Bai5/typing';
 import MyDatePicker from '@/components/MyDatePicker';
-import { DynamicFieldDescriptions, DynamicFieldInputs } from '@/pages/TienIch/Bai5/components/DynamicFields';
+import { DynamicFieldDescriptions, DynamicFieldInputs } from '@/pages/TienIch/Bai4/components/DynamicFields';
 
 const ThongTinVanBang: React.FC = () => {
 	const diplomaModel = useModel('bai5.diploma');

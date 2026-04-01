@@ -1,9 +1,9 @@
 import { message } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { genExcelFile } from '@/utils/utils';
-import { duLieuQuanLyCauLacBoMau } from '@/pages/TienIch/QuanLyCauLacBo/duLieuMau';
-import { luuDuLieuQuanLyCauLacBo, taiDuLieuQuanLyCauLacBo } from '@/pages/TienIch/QuanLyCauLacBo/khoDuLieu';
-import type { CauLacBo, DonDangKy, DuLieuBieuDo, DuLieuDonDangKyForm, LichSuXuLy, ThongKeTongQuan, ThanhVienCauLacBo, TrangThaiDon } from '@/pages/TienIch/QuanLyCauLacBo/typing';
+import { duLieuQuanLyCauLacBoMau } from '@/pages/TienIch/Bai5/QuanLyCauLacBo/duLieuMau';
+import { luuDuLieuQuanLyCauLacBo, taiDuLieuQuanLyCauLacBo } from '@/pages/TienIch/Bai5/QuanLyCauLacBo/khoDuLieu';
+import type { CauLacBo, DonDangKy, DuLieuBieuDo, DuLieuDonDangKyForm, LichSuXuLy, ThongKeTongQuan, ThanhVienCauLacBo, TrangThaiDon } from '@/pages/TienIch/Bai5/QuanLyCauLacBo/typing';
 
 const taoMa = (tienTo: string) => `${tienTo}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
