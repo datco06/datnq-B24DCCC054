@@ -16,8 +16,7 @@
 		],
 	},
 
-	///////////////////////////////////
-	// DEFAULT MENU
+
 	{
 		path: '/dashboard',
 		name: 'Dashboard',
@@ -37,14 +36,24 @@
 		icon: 'ArrowsAltOutlined',
 	},
 	{
-		path: '/tro-choi-doan-so',
-		name: 'Bài 1 - Đoán Số',
-		component: './TienIch/DoanSo',
-	},
-	{
-		path: '/todo-list',
-		name: 'Bài 2 - TodoList',
-		component: './TienIch/TodoList',
+		path: '/bai-1',
+		name: 'Bài 1',
+		routes: [
+			{
+				path: '/bai-1',
+				redirect: '/bai-1/doan-so',
+			},
+			{
+				path: '/bai-1/doan-so',
+				name: 'Đoán số',
+				component: './TienIch/Bai1/DoanSo',
+			},
+			{
+				path: '/bai-1/todo-list',
+				name: 'TodoList',
+				component: './TienIch/Bai1/TodoList',
+			},
+		],
 	},
 	{
 		path: '/oan-tu-ti',

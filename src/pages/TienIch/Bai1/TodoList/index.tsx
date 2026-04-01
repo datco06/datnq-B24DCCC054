@@ -109,7 +109,7 @@ const TodoListPage: React.FC = () => {
 		<Card>
 			<Space direction='vertical' size='large' style={{ width: '100%' }}>
 				<div>
-					<Title level={3}>Bài 2: TodoList</Title>
+					<Title level={3}>Bài 1: TodoList</Title>
 				</div>
 				<Statistic title='Công việc chưa hoàn thành' value={remaining} suffix={`/ ${todos.length}`} />
 				<Form form={form} layout='inline' onFinish={addTodo} style={{ gap: 12, flexWrap: 'wrap' }}>
