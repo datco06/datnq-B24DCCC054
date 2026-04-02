@@ -77,52 +77,58 @@ const Bai6TrangChu: React.FC = () => {
 
 	// Filter + Sort Logic
 	const danhSachDaLoc = useMemo(() => {
-		let ketQua = [...danhSachNguon];
+		let ketQua = danhSachNguon.filter((item): item is DiemDen => Boolean(item));
 
 		// Lọc theo từ khóa
 		if (tuKhoa.trim()) {
 			const keyword = tuKhoa.toLowerCase().trim();
 			ketQua = ketQua.filter(
-				(dd) =>
-					dd.ten.toLowerCase().includes(keyword) ||
-					dd.diaDiem.toLowerCase().includes(keyword) ||
-					dd.moTa.toLowerCase().includes(keyword) ||
-					dd.tags.some((tag) => tag.toLowerCase().includes(keyword)),
+				(dd) => {
+					if (!dd) return false;
+					const name = dd.ten?.toLowerCase() ?? '';
+					const location = dd.diaDiem?.toLowerCase() ?? '';
+					const desc = dd.moTa?.toLowerCase() ?? '';
+					const tagMatched = (dd.tags ?? []).some((tag) => tag?.toLowerCase?.().includes(keyword));
+					return name.includes(keyword) || location.includes(keyword) || desc.includes(keyword) || tagMatched;
+				},
 			);
 		}
 
 		// Lọc theo loại
 		if (loaiLoc !== 'tat-ca') {
-			ketQua = ketQua.filter((dd) => dd.loai === loaiLoc);
+			ketQua = ketQua.filter((dd) => dd?.loai === loaiLoc);
 		}
 
 		// Lọc theo khoảng giá
-		ketQua = ketQua.filter((dd) => dd.giaTien >= khoangGia[0] && dd.giaTien <= khoangGia[1]);
+		ketQua = ketQua.filter((dd) => {
+			const price = dd?.giaTien ?? 0;
+			return price >= khoangGia[0] && price <= khoangGia[1];
+		});
 
 		// Lọc theo đánh giá tối thiểu
 		if (danhGiaToiThieu > 0) {
-			ketQua = ketQua.filter((dd) => dd.danhGia >= danhGiaToiThieu);
+			ketQua = ketQua.filter((dd) => (dd?.danhGia ?? 0) >= danhGiaToiThieu);
 		}
 
 		// Sắp xếp
 		switch (sapXep) {
 			case 'rating-desc':
-				ketQua.sort((a, b) => b.danhGia - a.danhGia);
+				ketQua.sort((a, b) => (b.danhGia ?? 0) - (a.danhGia ?? 0));
 				break;
 			case 'rating-asc':
-				ketQua.sort((a, b) => a.danhGia - b.danhGia);
+				ketQua.sort((a, b) => (a.danhGia ?? 0) - (b.danhGia ?? 0));
 				break;
 			case 'price-asc':
-				ketQua.sort((a, b) => a.giaTien - b.giaTien);
+				ketQua.sort((a, b) => (a.giaTien ?? 0) - (b.giaTien ?? 0));
 				break;
 			case 'price-desc':
-				ketQua.sort((a, b) => b.giaTien - a.giaTien);
+				ketQua.sort((a, b) => (b.giaTien ?? 0) - (a.giaTien ?? 0));
 				break;
 			case 'reviews-desc':
-				ketQua.sort((a, b) => b.soLuotDanhGia - a.soLuotDanhGia);
+				ketQua.sort((a, b) => (b.soLuotDanhGia ?? 0) - (a.soLuotDanhGia ?? 0));
 				break;
 			case 'name-asc':
-				ketQua.sort((a, b) => a.ten.localeCompare(b.ten, 'vi'));
+				ketQua.sort((a, b) => (a.ten ?? '').localeCompare(b.ten ?? '', 'vi'));
 				break;
 			default:
 				break;
