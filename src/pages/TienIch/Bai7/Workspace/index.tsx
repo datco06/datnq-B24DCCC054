@@ -142,15 +142,22 @@ const Workspace: React.FC = () => {
 	const openEditModal = (task: TaskItem) => {
 		setEditingTask(task);
 		setIsModalVisible(true);
-		editForm.setFieldsValue({
-			title: task.title,
-			assignee: task.assignee,
-			priority: task.priority,
-			status: task.status,
-			deadline: moment(task.deadline),
-			description: task.description,
-		});
 	};
+
+	useEffect(() => {
+		if (editingTask) {
+			editForm.setFieldsValue({
+				title: editingTask.title,
+				assignee: editingTask.assignee,
+				priority: editingTask.priority,
+				status: editingTask.status,
+				deadline: moment(editingTask.deadline, 'YYYY-MM-DD'),
+				description: editingTask.description,
+			});
+		} else {
+			editForm.resetFields();
+		}
+	}, [editingTask, editForm]);
 
 	const handleUpdateTask = () => {
 		editForm
