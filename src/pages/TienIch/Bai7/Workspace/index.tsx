@@ -87,7 +87,7 @@ const Workspace: React.FC = () => {
 	const [form] = Form.useForm<TaskFormValues>();
 	const [editForm] = Form.useForm<TaskFormValues>();
 	const [editingTask, setEditingTask] = useState<TaskItem | null>(null);
-	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 	const [activeSection, setActiveSection] = useState<SectionKey>('tasks');
 
 	useEffect(() => {
@@ -141,40 +141,34 @@ const Workspace: React.FC = () => {
 
 	const openEditModal = (task: TaskItem) => {
 		setEditingTask(task);
-		setIsModalVisible(true);
+		editForm.setFieldsValue({
+			title: task.title,
+			assignee: task.assignee,
+			priority: task.priority,
+			status: task.status,
+			deadline: moment(task.deadline, 'YYYY-MM-DD'),
+			description: task.description,
+		});
+		setIsEditModalVisible(true);
 	};
 
-	useEffect(() => {
-		if (editingTask) {
-			editForm.setFieldsValue({
-				title: editingTask.title,
-				assignee: editingTask.assignee,
-				priority: editingTask.priority,
-				status: editingTask.status,
-				deadline: moment(editingTask.deadline, 'YYYY-MM-DD'),
-				description: editingTask.description,
-			});
-		} else {
-			editForm.resetFields();
-		}
-	}, [editingTask, editForm]);
+	const handleUpdateTask = (values: TaskFormValues) => {
+		if (!editingTask) return;
+		setTasks((prev) =>
+			prev.map((task) =>
+				task.id === editingTask.id
+					? { ...task, ...values, deadline: values.deadline.format('YYYY-MM-DD') }
+					: task,
+			),
+		);
+		message.success('Đã cập nhật công việc.');
+		closeEditModal();
+	};
 
-	const handleUpdateTask = () => {
-		editForm
-			.validateFields()
-			.then((values) => {
-				setTasks((prev) =>
-					prev.map((task) =>
-						task.id === editingTask?.id
-							? { ...task, ...values, deadline: values.deadline.format('YYYY-MM-DD') }
-							: task,
-					),
-				);
-				setIsModalVisible(false);
-				setEditingTask(null);
-				message.success('Đã cập nhật công việc.');
-			})
-			.catch(() => null);
+	const closeEditModal = () => {
+		setIsEditModalVisible(false);
+		setEditingTask(null);
+		editForm.resetFields();
 	};
 
 	const handleDeleteTask = (taskId: string) => {
@@ -280,7 +274,11 @@ const Workspace: React.FC = () => {
 								</Col>
 							</Row>
 							<Form.Item label='Deadline' name='deadline' rules={[{ required: true, message: 'Chọn hạn hoàn thành' }]}>
-								<DatePicker format='DD/MM/YYYY' style={{ width: '100%' }} />
+								<DatePicker
+									format='DD/MM/YYYY'
+									style={{ width: '100%' }}
+									disabledDate={(current) => current && current < moment().startOf('day')}
+								/>
 							</Form.Item>
 							<Form.Item label='Mô tả' name='description'>
 								<Input.TextArea rows={3} placeholder='Ghi chú nhanh cho công việc' />
@@ -303,51 +301,6 @@ const Workspace: React.FC = () => {
 					</Card>
 				</Col>
 			</Row>
-
-			<Modal
-				title={`Chỉnh sửa công việc ${editingTask?.id}`}
-				open={isModalVisible}
-				onOk={handleUpdateTask}
-				onCancel={() => {
-					setIsModalVisible(false);
-					setEditingTask(null);
-				}}
-				okText='Lưu thay đổi'
-				cancelText='Hủy'
-			>
-				<Form layout='vertical' form={editForm}>
-					<Form.Item label='Tên công việc' name='title' rules={[{ required: true, message: 'Nhập tên công việc' }]}>
-						<Input />
-					</Form.Item>
-					<Form.Item label='Người được giao' name='assignee' rules={[{ required: true, message: 'Nhập người được giao' }]}>
-						<Input />
-					</Form.Item>
-					<Form.Item label='Ưu tiên' name='priority' rules={[{ required: true, message: 'Chọn ưu tiên' }]}>
-						<Select
-							options={[
-								{ label: 'Thấp', value: 'low' },
-								{ label: 'Trung bình', value: 'medium' },
-								{ label: 'Cao', value: 'high' },
-							]}
-						/>
-					</Form.Item>
-					<Form.Item label='Trạng thái' name='status' rules={[{ required: true, message: 'Chọn trạng thái' }]}>
-						<Select
-							options={[
-								{ label: 'Chưa làm', value: 'todo' },
-								{ label: 'Đang làm', value: 'in-progress' },
-								{ label: 'Đã xong', value: 'done' },
-							]}
-						/>
-					</Form.Item>
-					<Form.Item label='Deadline' name='deadline' rules={[{ required: true, message: 'Chọn hạn hoàn thành' }]}>
-						<DatePicker format='DD/MM/YYYY' style={{ width: '100%' }} />
-					</Form.Item>
-					<Form.Item label='Mô tả' name='description'>
-						<Input.TextArea rows={3} />
-					</Form.Item>
-				</Form>
-			</Modal>
 		</div>
 	);
 
@@ -390,6 +343,60 @@ const Workspace: React.FC = () => {
 				</div>
 			</Card>
 			{activeSection === 'tasks' ? renderTaskSection() : renderPlaceholder(activeSection as Exclude<SectionKey, 'tasks'>)}
+			<Modal
+				title={`Cập nhật công việc `}
+				visible={isEditModalVisible}
+				onCancel={closeEditModal}
+				onOk={() => editForm.submit()}
+				okText='Cập nhật'
+				cancelText='Huỷ'
+				destroyOnClose
+				maskClosable={false}
+				width={520}
+			>
+				<Form layout='vertical' form={editForm} onFinish={handleUpdateTask}>
+					<Form.Item label='Tên công việc' name='title' rules={[{ required: true, message: 'Nhập tên công việc' }]}>
+						<Input />
+					</Form.Item>
+					<Form.Item label='Người được giao' name='assignee' rules={[{ required: true, message: 'Nhập người được giao' }]}>
+						<Input />
+					</Form.Item>
+					<Row gutter={12}>
+						<Col span={12}>
+							<Form.Item label='Ưu tiên' name='priority' rules={[{ required: true, message: 'Chọn ưu tiên' }]}>
+								<Select
+									options={[
+										{ label: 'Thấp', value: 'low' },
+										{ label: 'Trung bình', value: 'medium' },
+										{ label: 'Cao', value: 'high' },
+									]}
+								/>
+							</Form.Item>
+						</Col>
+						<Col span={12}>
+							<Form.Item label='Trạng thái' name='status' rules={[{ required: true, message: 'Chọn trạng thái' }]}>
+								<Select
+									options={[
+										{ label: 'Chưa làm', value: 'todo' },
+										{ label: 'Đang làm', value: 'in-progress' },
+										{ label: 'Đã xong', value: 'done' },
+									]}
+								/>
+							</Form.Item>
+						</Col>
+					</Row>
+					<Form.Item label='Deadline' name='deadline' rules={[{ required: true, message: 'Chọn hạn hoàn thành' }]}>
+						<DatePicker
+							format='DD/MM/YYYY'
+							style={{ width: '100%' }}
+							disabledDate={(current) => current && current < moment().startOf('day')}
+						/>
+					</Form.Item>
+					<Form.Item label='Mô tả' name='description'>
+						<Input.TextArea rows={3} />
+					</Form.Item>
+				</Form>
+			</Modal>
 		</PageContainer>
 	);
 };
