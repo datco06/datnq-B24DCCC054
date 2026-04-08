@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
+import CalendarView from '../Lich/CalendarView';
 import {
 	Badge,
 	Button,
@@ -41,7 +42,7 @@ import type { TaskItem, TaskPriority, TaskStatus } from '../types';
 const TASK_STORAGE_KEY = 'bai7-task-list';
 const STORAGE_KEY = 'bai7-current-user';
 
-type SectionKey = 'tasks' | 'filters' | 'assignment' | 'calendar' | 'analytics';
+type SectionKey = 'tasks' | 'filters' | 'assignment' | 'calendar';
 
 interface TaskFormValues {
 	title: string;
@@ -75,7 +76,6 @@ const SECTION_ITEMS = [
 	{ key: 'filters', label: 'Bộ lọc & Tìm kiếm' },
 	{ key: 'assignment', label: 'Phân công & Việc của tôi' },
 	{ key: 'calendar', label: 'Lịch' },
-	{ key: 'analytics', label: 'Thống kê' },
 ] as const;
 
 const PLACEHOLDER_TEXT: Record<'calendar' | 'analytics', { title: string; description: string }> = {
@@ -83,10 +83,7 @@ const PLACEHOLDER_TEXT: Record<'calendar' | 'analytics', { title: string; descri
 		title: 'Lịch hạn hoàn thành',
 		description: 'Đồng bộ deadline lên calendar chung của nhóm.',
 	},
-	analytics: {
-		title: 'Thống kê',
-		description: 'Tổng hợp tiến độ, số lượng việc hoàn thành và các KPI sprint.',
-	},
+	
 };
 
 /* ================================================================
@@ -461,6 +458,19 @@ const Workspace: React.FC = () => {
 		</div>
 	);
 
+	const renderPlaceholder1 = (key: Exclude<SectionKey, 'tasks'>) => {
+		if (key === 'calendar') {
+			return (
+				<Card style={{ marginTop: 16 }}>
+					<Typography.Title level={4}>Lịch công việc</Typography.Title>
+	
+					<CalendarView tasks={tasks} />
+				</Card>
+			);
+		}
+	
+		return null;
+	};
 	/* ================================================================
 	 * SECTION: BỘ LỌC & TÌM KIẾM (filters)
 	 *
@@ -812,9 +822,8 @@ const Workspace: React.FC = () => {
 			case 'assignment':
 				return renderAssignmentSection();
 			case 'calendar':
-				return renderPlaceholder('calendar');
-			case 'analytics':
-				return renderPlaceholder('analytics');
+				return renderPlaceholder1('calendar');
+			
 			default:
 				return null;
 		}

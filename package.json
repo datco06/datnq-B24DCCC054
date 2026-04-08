@@ -109,7 +109,7 @@
     "@types/lodash": "^4.14.144",
     "@types/react": "17.0.30",
     "@types/react-beautiful-dnd": "^13.1.2",
-    "@types/react-big-calendar": "^0.33.1",
+    "@types/react-big-calendar": "^0.33.2",
     "@types/react-dom": "^17.0.0",
     "@types/react-helmet": "^6.1.0",
     "@types/react-pdf": "^5.0.9",
