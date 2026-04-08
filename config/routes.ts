@@ -186,8 +186,29 @@
 			},
 		],
 	},
+	{
+		path: '/bai-7',
+		name: 'Bài 7 - Quản lý công việc nhóm',
+		hideChildrenInMenu: true,
+		routes: [
+			{
+				path: '/bai-7',
+				redirect: '/bai-7/dang-nhap',
+			},
+			{
+				path: '/bai-7/dang-nhap',
+				component: './TienIch/Bai7/DangNhap',
+				hideInMenu: true,
+			},
+			{
+				path: '/bai-7/workspace',
+				component: './TienIch/Bai7/Workspace',
+				hideInMenu: true,
+			},
+		],
+	},
 
-	
+
 
 	{
 		path: '/notification',
