@@ -1,4 +1,4 @@
-﻿export default [
+export default [
 	{
 		path: '/user',
 		layout: false,
@@ -167,27 +167,26 @@
 			{
 				path: '/bai-6/trang-chu',
 				name: 'Trang chủ',
-				component: './TienIch/Bai6/TrangChu',
+				component: './Bai6/TrangChu',
 			},
 			{
 				path: '/bai-6/quan-ly-ngan-sach',
 				name: 'Quản lý ngân sách',
-				component: './TienIch/Bai6/QuanLyNganSach',
+				component: './Bai6/QuanLyNganSach',
 			},
 			{
 				path: '/bai-6/tao-lich-trinh',
 				name: 'Tạo lịch trình',
-				component: './TienIch/Bai6/TaoLichTrinh',
+				component: './Bai6/TaoLichTrinh',
 			},
 			{
 				path: '/bai-6/trang-quan-tri',
 				name: 'Trang quản trị',
-				component: './TienIch/Bai6/TrangQuanTri',
+				component: './Bai6/TrangQuanTri',
 			},
 		],
 	},
 
-	
 
 	{
 		path: '/notification',

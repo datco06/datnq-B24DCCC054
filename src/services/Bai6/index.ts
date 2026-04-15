@@ -1,38 +1,25 @@
-import halongBay from './images/halong_bay.png';
-import sapaMountain from './images/sapa_mountain.png';
-import danangBeach from './images/danang_beach.png';
-import hoianTown from './images/hoian_town.png';
-import phuquocIsland from './images/phuquoc_island.png';
-import dalatCity from './images/dalat_city.png';
-
-export type LoaiDiemDen = 'bien' | 'nui' | 'thanhpho' | 'lang-que';
-
-export interface DiemDen {
-	id: string;
-	ten: string;
-	moTa: string;
-	hinhAnh: string;
-	diaDiem: string;
-	loai: LoaiDiemDen;
-	danhGia: number;
-	soLuotDanhGia: number;
-	giaTien: number; // VND / người
-	noiDung: string[];
-	tags: string[];
-}
+import halongBay from '@/assets/Bai6/halong_bay.png';
+import sapaMountain from '@/assets/Bai6/sapa_mountain.png';
+import danangBeach from '@/assets/Bai6/danang_beach.png';
+import hoianTown from '@/assets/Bai6/hoian_town.png';
+import phuquocIsland from '@/assets/Bai6/phuquoc_island.png';
+import dalatCity from '@/assets/Bai6/dalat_city.png';
+import type { DiemDen } from './typing';
+import { LoaiDiemDen } from './typing';
+export * from './typing';
 
 export const tenLoai: Record<LoaiDiemDen, string> = {
-	bien: '🏖️ Biển',
-	nui: '⛰️ Núi',
-	thanhpho: '🏙️ Thành phố',
-	'lang-que': '🏡 Làng quê',
+	[LoaiDiemDen.Bien]: '🏖️ Biển',
+	[LoaiDiemDen.Nui]: '⛰️ Núi',
+	[LoaiDiemDen.ThanhPho]: '🏙️ Thành phố',
+	[LoaiDiemDen.LangQue]: '🏡 Làng quê',
 };
 
 export const mauLoai: Record<LoaiDiemDen, string> = {
-	bien: '#1890ff',
-	nui: '#52c41a',
-	thanhpho: '#faad14',
-	'lang-que': '#f759ab',
+	[LoaiDiemDen.Bien]: '#1890ff',
+	[LoaiDiemDen.Nui]: '#52c41a',
+	[LoaiDiemDen.ThanhPho]: '#faad14',
+	[LoaiDiemDen.LangQue]: '#f759ab',
 };
 
 export const danhSachDiemDen: DiemDen[] = [
@@ -42,7 +29,7 @@ export const danhSachDiemDen: DiemDen[] = [
 		moTa: 'Di sản thiên nhiên thế giới UNESCO với hàng nghìn đảo đá vôi kỳ vĩ giữa biển ngọc bích.',
 		hinhAnh: halongBay,
 		diaDiem: 'Quảng Ninh',
-		loai: 'bien',
+		loai: LoaiDiemDen.Bien,
 		danhGia: 4.8,
 		soLuotDanhGia: 12580,
 		giaTien: 2500000,
@@ -55,7 +42,7 @@ export const danhSachDiemDen: DiemDen[] = [
 		moTa: 'Thị trấn sương mù trên đỉnh núi với ruộng bậc thang tuyệt đẹp và văn hóa dân tộc độc đáo.',
 		hinhAnh: sapaMountain,
 		diaDiem: 'Lào Cai',
-		loai: 'nui',
+		loai: LoaiDiemDen.Nui,
 		danhGia: 4.7,
 		soLuotDanhGia: 9830,
 		giaTien: 1800000,
@@ -68,7 +55,7 @@ export const danhSachDiemDen: DiemDen[] = [
 		moTa: 'Thành phố đáng sống nhất Việt Nam với bãi biển đẹp, cầu Rồng và ẩm thực phong phú.',
 		hinhAnh: danangBeach,
 		diaDiem: 'Đà Nẵng',
-		loai: 'bien',
+		loai: LoaiDiemDen.Bien,
 		danhGia: 4.6,
 		soLuotDanhGia: 15420,
 		giaTien: 2200000,
@@ -81,7 +68,7 @@ export const danhSachDiemDen: DiemDen[] = [
 		moTa: 'Phố cổ đèn lồng lộng lẫy bên dòng sông Thu Bồn, nơi giao thoa văn hóa Đông - Tây.',
 		hinhAnh: hoianTown,
 		diaDiem: 'Quảng Nam',
-		loai: 'thanhpho',
+		loai: LoaiDiemDen.ThanhPho,
 		danhGia: 4.9,
 		soLuotDanhGia: 18200,
 		giaTien: 1500000,
@@ -94,7 +81,7 @@ export const danhSachDiemDen: DiemDen[] = [
 		moTa: 'Đảo ngọc thiên đường với bãi biển cát trắng, nước biển trong xanh và hoàng hôn tuyệt đẹp.',
 		hinhAnh: phuquocIsland,
 		diaDiem: 'Kiên Giang',
-		loai: 'bien',
+		loai: LoaiDiemDen.Bien,
 		danhGia: 4.5,
 		soLuotDanhGia: 11350,
 		giaTien: 3200000,
@@ -107,50 +94,11 @@ export const danhSachDiemDen: DiemDen[] = [
 		moTa: 'Thành phố ngàn hoa trên cao nguyên với khí hậu mát mẻ, kiến trúc Pháp và hồ Xuân Hương.',
 		hinhAnh: dalatCity,
 		diaDiem: 'Lâm Đồng',
-		loai: 'nui',
+		loai: LoaiDiemDen.Nui,
 		danhGia: 4.7,
 		soLuotDanhGia: 13750,
 		giaTien: 1600000,
 		noiDung: ['Hồ Xuân Hương', 'Thung lũng Tình Yêu', 'Thiền viện Trúc Lâm', 'Chợ đêm'],
 		tags: ['Lãng mạn', 'Thiên nhiên'],
-	},
-	{
-		id: '7',
-		ten: 'Nha Trang',
-		moTa: 'Thành phố biển sôi động với vịnh biển đẹp nhất thế giới, tháp Ponagar cổ kính.',
-		hinhAnh: danangBeach,
-		diaDiem: 'Khánh Hòa',
-		loai: 'bien',
-		danhGia: 4.4,
-		soLuotDanhGia: 10200,
-		giaTien: 2000000,
-		noiDung: ['Vinpearl Land', 'Tháp Bà Ponagar', 'Đảo Hòn Mun', 'Tắm bùn'],
-		tags: ['Biển đẹp', 'Giải trí'],
-	},
-	{
-		id: '8',
-		ten: 'Hà Nội',
-		moTa: 'Thủ đô ngàn năm văn hiến với phố cổ 36 phố phường, hồ Hoàn Kiếm và ẩm thực đường phố.',
-		hinhAnh: hoianTown,
-		diaDiem: 'Hà Nội',
-		loai: 'thanhpho',
-		danhGia: 4.6,
-		soLuotDanhGia: 20100,
-		giaTien: 1200000,
-		noiDung: ['Hồ Hoàn Kiếm', 'Phố cổ', 'Lăng Bác', 'Ẩm thực đường phố'],
-		tags: ['Văn hóa', 'Ẩm thực'],
-	},
-	{
-		id: '9',
-		ten: 'Mũi Né',
-		moTa: 'Thiên đường cát trắng với đồi cát bay huyền bí, suối tiên kỳ ảo và biển xanh.',
-		hinhAnh: phuquocIsland,
-		diaDiem: 'Bình Thuận',
-		loai: 'bien',
-		danhGia: 4.3,
-		soLuotDanhGia: 7800,
-		giaTien: 1800000,
-		noiDung: ['Đồi cát trắng', 'Suối Tiên', 'Bãi biển', 'Lướt ván diều'],
-		tags: ['Phiêu lưu', 'Thiên nhiên'],
 	},
 ];
