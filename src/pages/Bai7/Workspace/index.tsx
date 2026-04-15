@@ -35,12 +35,9 @@ import {
 } from '@ant-design/icons';
 import moment from 'moment';
 import type { Moment } from 'moment';
-import { history } from 'umi';
-import { defaultTasks } from '../defaultTasks';
-import type { TaskItem, TaskPriority, TaskStatus } from '../types';
-
-const TASK_STORAGE_KEY = 'bai7-task-list';
-const STORAGE_KEY = 'bai7-current-user';
+import { history, useModel } from 'umi';
+import type { TaskItem } from '@/services/Bai7';
+import { TaskPriority, TaskStatus } from '@/services/Bai7';
 
 type SectionKey = 'tasks' | 'filters' | 'assignment' | 'calendar';
 
@@ -54,21 +51,21 @@ interface TaskFormValues {
 }
 
 const statusText: Record<TaskStatus, string> = {
-	todo: 'Chưa làm',
-	'in-progress': 'Đang làm',
-	done: 'Đã xong',
+	[TaskStatus.Todo]: 'Chưa làm',
+	[TaskStatus.InProgress]: 'Đang làm',
+	[TaskStatus.Done]: 'Đã xong',
 };
 
 const statusColor: Record<TaskStatus, string> = {
-	todo: 'default',
-	'in-progress': 'processing',
-	done: 'success',
+	[TaskStatus.Todo]: 'default',
+	[TaskStatus.InProgress]: 'processing',
+	[TaskStatus.Done]: 'success',
 };
 
 const priorityText: Record<TaskPriority, string> = {
-	low: 'Thấp',
-	medium: 'Trung bình',
-	high: 'Cao',
+	[TaskPriority.Low]: 'Thấp',
+	[TaskPriority.Medium]: 'Trung bình',
+	[TaskPriority.High]: 'Cao',
 };
 
 const SECTION_ITEMS = [
@@ -78,125 +75,62 @@ const SECTION_ITEMS = [
 	{ key: 'calendar', label: 'Lịch' },
 ] as const;
 
-const PLACEHOLDER_TEXT: Record<'calendar' | 'analytics', { title: string; description: string }> = {
-	calendar: {
-		title: 'Lịch hạn hoàn thành',
-		description: 'Đồng bộ deadline lên calendar chung của nhóm.',
-	},
-	
-};
 
-/* ================================================================
- * COMPONENT CHÍNH
- * ================================================================ */
+
+
 const Workspace: React.FC = () => {
-	const [tasks, setTasks] = useState<TaskItem[]>(defaultTasks);
-	const [currentUser, setCurrentUser] = useState<string | null>(null);
+	const { currentUser, logout } = useModel('bai7.DangNhap.index');
+	const {
+		tasks,
+		filteredTasks,
+		addTask,
+		updateTask,
+		deleteTask,
+		filterKeyword,
+		setFilterKeyword,
+		filterStatus,
+		setFilterStatus,
+		filterAssignee,
+		setFilterAssignee,
+	} = useModel('bai7.Workspace.index');
+
 	const [form] = Form.useForm<TaskFormValues>();
 	const [editForm] = Form.useForm<TaskFormValues>();
 	const [editingTask, setEditingTask] = useState<TaskItem | null>(null);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [activeSection, setActiveSection] = useState<SectionKey>('tasks');
 
-	/* ---------- Bộ lọc & Tìm kiếm state ---------- */
-	const [filterKeyword, setFilterKeyword] = useState('');
-	const [filterStatus, setFilterStatus] = useState<TaskStatus | 'all'>('all');
-	const [filterAssignee, setFilterAssignee] = useState<string>('all');
 
-	/* ---------- Phân công state ---------- */
 	const [assignmentView, setAssignmentView] = useState<'all' | 'mine'>('all');
 
-	/* ================================================================
-	 * LOAD / PERSIST
-	 * ================================================================ */
 	useEffect(() => {
-		if (typeof window === 'undefined') return;
-		const savedUser = window.localStorage.getItem(STORAGE_KEY);
-		if (!savedUser) {
+		if (!currentUser) {
 			history.replace('/bai-7/dang-nhap');
-			return;
 		}
-		setCurrentUser(savedUser);
+	}, [currentUser]);
 
-		const storedTasks = window.localStorage.getItem(TASK_STORAGE_KEY);
-		if (storedTasks) {
-			try {
-				const parsed = JSON.parse(storedTasks) as TaskItem[];
-				setTasks(parsed);
-			} catch (error) {
-				console.error('Không thể parse dữ liệu task, dùng default.', error);
-			}
-		} else {
-			window.localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(defaultTasks));
-		}
-	}, []);
-
-	useEffect(() => {
-		if (typeof window === 'undefined') return;
-		window.localStorage.setItem(TASK_STORAGE_KEY, JSON.stringify(tasks));
-	}, [tasks]);
-
-	/* ================================================================
-	 * DANH SÁCH NGƯỜI ĐƯỢC GIAO (dùng chung cho dropdown)
-	 * ================================================================ */
 	const uniqueAssignees = useMemo(() => {
 		const set = new Set(tasks.map((t) => t.assignee));
 		return Array.from(set).sort((a, b) => a.localeCompare(b, 'vi'));
 	}, [tasks]);
 
-	/* ================================================================
-	 * 1) HÀM LỌC DỮ LIỆU — dùng .filter() và .includes()
-	 *    Chạy mỗi khi filterKeyword / filterStatus / filterAssignee thay đổi
-	 * ================================================================ */
-	const filteredTasks = useMemo(() => {
-		let result = tasks.filter((task): task is TaskItem => Boolean(task));
 
-		// Lọc theo từ khóa tìm kiếm (tên công việc)
-		if (filterKeyword.trim()) {
-			const keyword = filterKeyword.toLowerCase().trim();
-			result = result.filter((task) => {
-				const title = task.title?.toLowerCase() ?? '';
-				const desc = task.description?.toLowerCase() ?? '';
-				return title.includes(keyword) || desc.includes(keyword);
-			});
-		}
-
-		// Lọc theo trạng thái (Chưa làm / Đang làm / Đã xong)
-		if (filterStatus !== 'all') {
-			result = result.filter((task) => task.status === filterStatus);
-		}
-
-		// Lọc theo người được giao
-		if (filterAssignee !== 'all') {
-			result = result.filter((task) => task.assignee === filterAssignee);
-		}
-
-		return result;
-	}, [tasks, filterKeyword, filterStatus, filterAssignee]);
-
-	/* ================================================================
-	 * 2) LỌC "VIỆC CỦA TÔI" — assignedTo trùng currentUser
-	 * ================================================================ */
 	const myTasks = useMemo(() => {
 		if (!currentUser) return [];
-		return tasks.filter((task) => task.assignee === currentUser);
+		return tasks.filter((task) => task.assignee === currentUser.username);
 	}, [tasks, currentUser]);
 
-	/* ================================================================
-	 * THỐNG KÊ NHANH
-	 * ================================================================ */
+
 	const stats = useMemo(() => {
 		const total = tasks.length;
-		const done = tasks.filter((task) => task.status === 'done').length;
-		const inProgress = tasks.filter((task) => task.status === 'in-progress').length;
-		const todo = tasks.filter((task) => task.status === 'todo').length;
-		const assignedToCurrent = currentUser ? tasks.filter((task) => task.assignee === currentUser).length : 0;
+		const done = tasks.filter((task) => task.status === TaskStatus.Done).length;
+		const inProgress = tasks.filter((task) => task.status === TaskStatus.InProgress).length;
+		const todo = tasks.filter((task) => task.status === TaskStatus.Todo).length;
+		const assignedToCurrent = currentUser ? tasks.filter((task) => task.assignee === currentUser.username).length : 0;
 		return { total, done, inProgress, todo, assignedToCurrent };
 	}, [tasks, currentUser]);
 
-	/* ================================================================
-	 * CRUD HANDLERS (giữ nguyên logic gốc)
-	 * ================================================================ */
+
 	const handleAddTask = (values: TaskFormValues) => {
 		const newTask: TaskItem = {
 			id: `T-${Date.now()}`,
@@ -207,7 +141,7 @@ const Workspace: React.FC = () => {
 			deadline: values.deadline.format('YYYY-MM-DD'),
 			description: values.description?.trim(),
 		};
-		setTasks((prev) => [newTask, ...prev]);
+		addTask(newTask);
 		form.resetFields();
 		message.success('Đã thêm công việc mới.');
 	};
@@ -236,11 +170,9 @@ const Workspace: React.FC = () => {
 		editForm
 			.validateFields()
 			.then((values) => {
-				setTasks((prev) =>
-					prev.map((task) =>
-						task.id === editingTask?.id ? { ...task, ...values, deadline: values.deadline.format('YYYY-MM-DD') } : task,
-					),
-				);
+				if (editingTask) {
+					updateTask(editingTask.id, { ...values, deadline: values.deadline.format('YYYY-MM-DD') });
+				}
 				setIsModalVisible(false);
 				setEditingTask(null);
 				message.success('Đã cập nhật công việc.');
@@ -249,14 +181,12 @@ const Workspace: React.FC = () => {
 	};
 
 	const handleDeleteTask = (taskId: string) => {
-		setTasks((prev) => prev.filter((task) => task.id !== taskId));
+		deleteTask(taskId);
 		message.info('Đã xoá công việc.');
 	};
 
 	const handleLogout = () => {
-		if (typeof window !== 'undefined') {
-			window.localStorage.removeItem(STORAGE_KEY);
-		}
+		logout();
 		history.replace('/bai-7/dang-nhap');
 	};
 
@@ -267,9 +197,6 @@ const Workspace: React.FC = () => {
 		setFilterAssignee('all');
 	}, []);
 
-	/* ================================================================
-	 * COLUMNS (dùng chung cho mọi bảng)
-	 * ================================================================ */
 	const columns: ColumnsType<TaskItem> = [
 		{
 			title: 'Tên công việc',
@@ -289,9 +216,9 @@ const Workspace: React.FC = () => {
 			title: 'Người được giao',
 			dataIndex: 'assignee',
 			render: (value: string) => (
-				<Tag icon={<UserOutlined />} color={value === currentUser ? 'blue' : undefined}>
+				<Tag icon={<UserOutlined />} color={value === currentUser?.username ? 'blue' : undefined}>
 					{value}
-					{value === currentUser && ' (Tôi)'}
+					{value === currentUser?.username && ' (Tôi)'}
 				</Tag>
 			),
 		},
@@ -299,7 +226,7 @@ const Workspace: React.FC = () => {
 			title: 'Ưu tiên',
 			dataIndex: 'priority',
 			render: (priority: TaskPriority) => (
-				<Tag color={priority === 'high' ? 'red' : priority === 'medium' ? 'blue' : 'green'}>
+				<Tag color={priority === TaskPriority.High ? 'red' : priority === TaskPriority.Medium ? 'blue' : 'green'}>
 					{priorityText[priority]}
 				</Tag>
 			),
@@ -331,9 +258,7 @@ const Workspace: React.FC = () => {
 		},
 	];
 
-	/* ================================================================
-	 * EDIT MODAL (dùng chung)
-	 * ================================================================ */
+
 	const renderEditModal = () => (
 		<Modal
 			title={`Chỉnh sửa công việc ${editingTask?.id}`}
@@ -385,9 +310,7 @@ const Workspace: React.FC = () => {
 		</Modal>
 	);
 
-	/* ================================================================
-	 * SECTION: DANH SÁCH CÔNG VIỆC (tasks) — giữ nguyên logic gốc
-	 * ================================================================ */
+
 	const renderTaskSection = () => (
 		<div style={{ marginTop: 16 }}>
 			<Row gutter={[24, 24]}>
@@ -463,22 +386,15 @@ const Workspace: React.FC = () => {
 			return (
 				<Card style={{ marginTop: 16 }}>
 					<Typography.Title level={4}>Lịch công việc</Typography.Title>
-	
+
 					<CalendarView tasks={tasks} />
 				</Card>
 			);
 		}
-	
+
 		return null;
 	};
-	/* ================================================================
-	 * SECTION: BỘ LỌC & TÌM KIẾM (filters)
-	 *
-	 * Sử dụng:
-	 *   - .filter() kết hợp .includes() để lọc theo từ khoá
-	 *   - Dropdown trạng thái + dropdown người được giao
-	 *   - Cập nhật DOM ngay lập tức qua useMemo (filteredTasks)
-	 * ================================================================ */
+
 	const renderFilterSection = () => {
 		const isFiltering = filterKeyword.trim() || filterStatus !== 'all' || filterAssignee !== 'all';
 
@@ -560,7 +476,7 @@ const Workspace: React.FC = () => {
 								{uniqueAssignees.map((name) => (
 									<Select.Option key={name} value={name}>
 										{name}
-										{name === currentUser ? ' (Tôi)' : ''}
+										{name === currentUser?.username ? ' (Tôi)' : ''}
 									</Select.Option>
 								))}
 							</Select>
@@ -624,15 +540,7 @@ const Workspace: React.FC = () => {
 		);
 	};
 
-	/* ================================================================
-	 * SECTION: PHÂN CÔNG & VIỆC CỦA TÔI (assignment)
-	 *
-	 * Sử dụng:
-	 *   - .filter() để lọc task.assignee === currentUser
-	 *   - Nút chuyển đổi "Tất cả công việc" / "Việc của tôi"
-	 *   - Hiển thị workload phân bổ theo từng thành viên
-	 * ================================================================ */
-	// Thống kê workload theo từng thành viên (component-level useMemo)
+
 	const memberStats = useMemo(() => {
 		const map = new Map<string, { total: number; done: number; inProgress: number; todo: number }>();
 		tasks.forEach((task) => {
@@ -739,7 +647,7 @@ const Workspace: React.FC = () => {
 						>
 							{memberStats.map(([name, stat]) => {
 								const percent = stat.total > 0 ? Math.round((stat.done / stat.total) * 100) : 0;
-								const isMe = name === currentUser;
+								const isMe = name === currentUser?.username;
 								return (
 									<div
 										key={name}
@@ -788,20 +696,9 @@ const Workspace: React.FC = () => {
 		);
 	};
 
-	/* ================================================================
-	 * PLACEHOLDER CHO CÁC TAB CHƯA TRIỂN KHAI
-	 * ================================================================ */
-	const renderPlaceholder = (key: 'calendar' | 'analytics') => (
-		<Card style={{ marginTop: 16 }}>
-			<Typography.Title level={4}>{PLACEHOLDER_TEXT[key].title}</Typography.Title>
-			<Typography.Paragraph>{PLACEHOLDER_TEXT[key].description}</Typography.Paragraph>
-			<Typography.Text type='secondary'>Người đang đăng nhập: {currentUser}</Typography.Text>
-		</Card>
-	);
 
-	/* ================================================================
-	 * USER MENU
-	 * ================================================================ */
+
+
 	const userMenu = (
 		<Menu>
 			<Menu.Item key='logout' onClick={handleLogout}>
@@ -810,9 +707,7 @@ const Workspace: React.FC = () => {
 		</Menu>
 	);
 
-	/* ================================================================
-	 * RENDER THEO SECTION ĐANG ACTIVE
-	 * ================================================================ */
+
 	const renderActiveSection = () => {
 		switch (activeSection) {
 			case 'tasks':
@@ -823,17 +718,14 @@ const Workspace: React.FC = () => {
 				return renderAssignmentSection();
 			case 'calendar':
 				return renderPlaceholder1('calendar');
-			
+
 			default:
 				return null;
 		}
 	};
 
-	/* ================================================================
-	 * MAIN RENDER
-	 * ================================================================ */
 	return (
-		<PageContainer header={false}>
+		<PageContainer>
 			<Card>
 				<div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
 					<Menu
@@ -848,7 +740,7 @@ const Workspace: React.FC = () => {
 					</Menu>
 					<Dropdown overlay={userMenu} trigger={['click']}>
 						<Button type='text' icon={<UserOutlined />}>
-							{currentUser}
+							{currentUser?.fullName || currentUser?.username}
 							<DownOutlined style={{ marginLeft: 8 }} />
 						</Button>
 					</Dropdown>

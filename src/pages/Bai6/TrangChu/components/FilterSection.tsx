@@ -17,7 +17,7 @@ const FilterSection: React.FC = () => {
 		sapXep, setSapXep,
 		resetFilters,
 		filteredDestinations
-	} = useModel('bai6Model');
+	} = useModel('bai6.bai6Model');
 
 	return (
 		<>

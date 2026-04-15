@@ -1,11 +1,5 @@
-export type Task = {
-    id: number;
-    title: string;
-    assignee: string;
-    priority: "Low" | "Medium" | "High";
-    deadline: string;
-    status: "todo" | "doing" | "done";
-  };
+import type { TaskItem } from '@/services/Bai7';
+import { TaskStatus } from '@/services/Bai7';
   
   export type CalendarEvent = {
     title: string;
@@ -16,7 +10,7 @@ export type Task = {
   };
   
   // convert task -> event
-  export const mapTasksToEvents = (tasks: Task[]): CalendarEvent[] => {
+  export const mapTasksToEvents = (tasks: TaskItem[]): CalendarEvent[] => {
     return tasks.map((task) => ({
       title: `${task.title} - ${task.assignee}`,
       start: new Date(task.deadline),
@@ -27,13 +21,13 @@ export type Task = {
   };
   
   // màu theo trạng thái
-  export const getEventStyle = (status: string) => {
+  export const getEventStyle = (status: TaskStatus | string) => {
     switch (status) {
-      case "done":
+      case TaskStatus.Done:
         return { backgroundColor: "green" };
-      case "in-progress":
+      case TaskStatus.InProgress:
         return { backgroundColor: "orange" };
-      case "todo":
+      case TaskStatus.Todo:
         return { backgroundColor: "red" };
       default:
         return { backgroundColor: "#3174ad" };

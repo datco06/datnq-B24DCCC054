@@ -10,7 +10,7 @@ import DayPlan from './components/DayPlan';
 const { Title } = Typography;
 
 const Bai6TaoLichTrinh: React.FC = () => {
-	const { rawDestinations, loadData } = useModel('bai6Model');
+	const { rawDestinations, loadData } = useModel('bai6.bai6Model');
 
 	const destinations = useMemo(() => {
 		return rawDestinations.length ? rawDestinations : getFallbackDestinations(danhSachDiemDen);

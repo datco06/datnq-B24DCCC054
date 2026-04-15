@@ -9,7 +9,7 @@ import type { Destination } from '@/services/Bai6/typing';
 const { Title, Text } = Typography;
 
 const Bai6TrangQuanTri: React.FC = () => {
-	const { rawDestinations, stats, loadData, updateDestinations } = useModel('bai6Model');
+	const { rawDestinations, stats, loadData, updateDestinations } = useModel('bai6.bai6Model');
 	const [editing, setEditing] = useState<Destination | null>(null);
 
 	useEffect(() => {

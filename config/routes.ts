@@ -197,12 +197,12 @@ export default [
 			},
 			{
 				path: '/bai-7/dang-nhap',
-				component: './TienIch/Bai7/DangNhap',
+				component: './Bai7/DangNhap',
 				hideInMenu: true,
 			},
 			{
 				path: '/bai-7/workspace',
-				component: './TienIch/Bai7/Workspace',
+				component: './Bai7/Workspace',
 				hideInMenu: true,
 			},
 		],

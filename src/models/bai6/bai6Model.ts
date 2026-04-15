@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo } from 'react';
 import type { Destination, DestinationStat } from '@/services/Bai6';
 import { DestinationType, LoaiDiemDen, SortMode } from '@/services/Bai6';
 import { danhSachDiemDen } from '@/services/Bai6';
-import { filterAndSortDestinations, mapDestinations } from './bai6/TrangChu';
+import { filterAndSortDestinations, mapDestinations } from './TrangChu';
 
 // Key for storage (shared with admin)
 const DESTINATION_KEY = 'bai6_destinations';

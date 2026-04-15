@@ -14,7 +14,7 @@ const Bai6TrangChu: React.FC = () => {
 		filteredDiemDen,
 		loadData,
 		resetFilters
-	} = useModel('bai6Model');
+	} = useModel('bai6.bai6Model');
 
 	const [diemDenChiTiet, setDiemDenChiTiet] = useState<DiemDen | null>(null);
 

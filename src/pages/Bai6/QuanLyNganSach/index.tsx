@@ -9,7 +9,7 @@ import MonthlyStats from './components/MonthlyStats';
 const { Title, Paragraph } = Typography;
 
 const Bai6QuanLyNganSach: React.FC = () => {
-	const { rawDestinations, stats, loadData } = useModel('bai6Model');
+	const { rawDestinations, stats, loadData } = useModel('bai6.bai6Model');
 	const [budgetLimit, setBudgetLimit] = useState<number>(15000000);
 
 	useEffect(() => {

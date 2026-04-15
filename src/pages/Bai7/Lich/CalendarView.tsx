@@ -3,16 +3,13 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import {
-  Task,
-  mapTasksToEvents,
-  getEventStyle,
-} from "./CalendarUtils";
+import type { TaskItem } from '@/services/Bai7';
+import { mapTasksToEvents, getEventStyle } from "./CalendarUtils";
 
 const localizer = momentLocalizer(moment);
 
 type Props = {
-  tasks: Task[];
+  tasks: TaskItem[];
 };
 
 const CalendarView: React.FC<Props> = ({ tasks }) => {
