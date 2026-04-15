@@ -1,14 +1,10 @@
 import React from 'react';
-import { Card, Col, Empty, List, Progress, Row, Space, Statistic } from 'antd';
+import { Card, Col, Empty, Progress, Row, Space, Statistic } from 'antd';
 import Chart from 'react-apexcharts';
-import type { Destination, DestinationStat } from '../typing';
-
-interface StatsCardsProps {
-	stats: DestinationStat[];
-	destinations: Destination[];
-}
+import type { StatsCardsProps } from '@/services/Bai6';
 
 const StatsCards: React.FC<StatsCardsProps> = ({ stats, destinations }) => {
+
 	if (!stats.length) {
 		return (
 			<Card>
@@ -36,16 +32,6 @@ const StatsCards: React.FC<StatsCardsProps> = ({ stats, destinations }) => {
 		},
 		{ food: 0, transport: 0, stay: 0 },
 	);
-	const topDestinations = [...destinations]
-		.sort((a, b) => b.rating - a.rating)
-		.slice(0, 5)
-		.map((item) => ({
-			id: item.id,
-			name: item.name,
-			location: item.location,
-			rating: item.rating,
-			cost: item.costs.food + item.costs.transport + item.costs.stay,
-		}));
 
 	return (
 		<Space direction='vertical' size='large' style={{ width: '100%' }}>
@@ -85,29 +71,7 @@ const StatsCards: React.FC<StatsCardsProps> = ({ stats, destinations }) => {
 				/>
 			</Card>
 			<Row gutter={[16, 16]}>
-				<Col xs={24} md={12}>
-					<Card title='Top điểm đến nổi bật'>
-						<List
-							dataSource={topDestinations}
-							renderItem={(item) => (
-								<List.Item>
-									<List.Item.Meta title={item.name} description={item.location} />
-									<Space direction='vertical' align='end'>
-										<Statistic value={item.rating} suffix='/5★' title='Rating' precision={1} />
-										<Statistic
-											value={item.cost}
-											suffix='đ'
-											title='Chi phí dự kiến'
-											precision={0}
-											valueStyle={{ fontSize: 14 }}
-										/>
-									</Space>
-								</List.Item>
-							)}
-						/>
-					</Card>
-				</Col>
-				<Col xs={24} md={12}>
+				<Col xs={24}>
 					<Card title='Cơ cấu chi phí'>
 						<Chart
 							type='donut'

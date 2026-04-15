@@ -1,18 +1,13 @@
 import React from 'react';
 import { Button, Card, Popconfirm, Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
-import type { Destination } from '../typing';
-
-export interface DestinationTableProps {
-	data: Destination[];
-	onEdit: (record: Destination) => void;
-	onDelete: (id: string) => void;
-}
+import type { Destination, DestinationTableProps } from '@/services/Bai6';
 
 const typeColors: Record<Destination['type'], string> = {
 	bien: 'blue',
 	nui: 'green',
-	'thanh-pho': 'volcano',
+	thanhpho: 'volcano',
+
 	'lang-que': 'gold',
 };
 

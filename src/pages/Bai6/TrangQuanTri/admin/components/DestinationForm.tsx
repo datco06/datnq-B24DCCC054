@@ -1,18 +1,14 @@
 import React, { useEffect } from 'react';
 import { Button, Card, Form, Input, InputNumber, Select } from 'antd';
-import type { Destination, DestinationType } from '../typing';
-
-export interface DestinationFormProps {
-	editing?: Destination | null;
-	onSubmit: (payload: Omit<Destination, 'id'>) => void;
-	onCancelEdit: () => void;
-}
+import type { Destination, DestinationFormProps } from '@/services/Bai6';
+import { DestinationType } from '@/services/Bai6';
 
 const destinationTypes: { label: string; value: DestinationType }[] = [
-	{ label: 'Biển', value: 'bien' },
-	{ label: 'Núi', value: 'nui' },
-	{ label: 'Thành phố', value: 'thanh-pho' },
-	{ label: 'Làng quê', value: 'lang-que' },
+	{ label: 'Biển', value: DestinationType.Bien },
+	{ label: 'Núi', value: DestinationType.Nui },
+	{ label: 'Thành phố', value: DestinationType.ThanhPho },
+
+	{ label: 'Làng quê', value: DestinationType.LangQue },
 ];
 
 const priceCategories = [
